@@ -1,9 +1,8 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
+class lol {
 
-class opgg {
-
-  static async player (nick) {
+  static async opggPlayer (nick) {
     try {
       const nickTratado = nick.replaceAll(' ', '%20')
       const result = await axios.get(`https://www.op.gg/summoners/br/${nickTratado}`)
@@ -62,8 +61,26 @@ class opgg {
     return elos[elo]
   }
 
+  static async leagueOfGraphsPlayer (nick) {
+    try {
+      const nickTratado = nick.toLowerCase().replaceAll(' ', '+')
+      const result = await axios.get(`https://www.leagueofgraphs.com/summoner/br/${nickTratado}#championsData-soloqueue`)
+      const $ = cheerio.load(result.data)
+      const level = /[0-9]+/.exec($('div.bannerSubtitle').text())[0]
+      const iconePerfil = 'https:'+$('div.img').find('img').eq(0).attr('src')
+      const rank = {}
+      
+      return {
+        iconePerfil,
+        nick,
+        level,
+        rank,
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 }
 
-opgg.player('Aluno do UCLA').then((data) => {
-  console.log(data)
-})
+lol.leagueOfGraphsPlayer('Aluno do UCLA')

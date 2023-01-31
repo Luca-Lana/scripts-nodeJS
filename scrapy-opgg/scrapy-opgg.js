@@ -70,10 +70,19 @@ class lol {
       const iconePerfil = 'https:'+$('div.img').find('img').eq(0).attr('src')
       const rank = {}
       //soloDuo
-      let [elo, eloNumber] = $('div[class="txt mainRankingDescriptionText"]').find('.leagueTier').text().trim().split(' ')
-      rank['soloDuo'] = this.traduzirElo(elo) + ' ' + eloNumber + ' ' + $('div[class="txt mainRankingDescriptionText"]').find('.leaguePoints').text().trim()
+      var [elo, eloNumber] = $('div[class="txt mainRankingDescriptionText"]').find('.leagueTier').text().trim().split(' ')
+      if (elo === 'Unranked') {
+        rank['soloDuo'] = 'sem rank'
+      } else {
+        rank['soloDuo'] = this.traduzirElo(elo) + ' ' + eloNumber + ' / ' + $('div[class="txt mainRankingDescriptionText"]').find('.leaguePoints').text().trim() + ' pdl'
+      }
       //flex
-      console.log(rank)
+      var [elo, eloNumber] = $('div[class="medium-24 columns"]').find('div[class="medium-14 columns leagueTier"]').text().trim().split(' ')
+      if (elo) {
+        rank['flex'] = this.traduzirElo(elo) + ' ' + eloNumber + ' / ' + $('div[class="medium-24 columns"]').find('.leaguePoints').text().trim() + ' pdl'
+      } else {
+        rank['flex'] = 'sem rank'
+      }
       return {
         iconePerfil,
         nick,
@@ -87,4 +96,6 @@ class lol {
 
 }
 
-lol.leagueOfGraphsPlayer('Aluno do UCLA')
+lol.leagueOfGraphsPlayer('stunei agr mata').then((data) => {
+  console.log(data);
+})

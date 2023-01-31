@@ -40,7 +40,7 @@ class lol {
     fila = fila.toLowerCase()
     const filas = {
       'ranked solo': 'soloDuo', 
-      'ranked flex': 'flex'
+      'ranked flex': 'flex',
     }
     return filas[fila]
   }
@@ -69,7 +69,11 @@ class lol {
       const level = /[0-9]+/.exec($('div.bannerSubtitle').text())[0]
       const iconePerfil = 'https:'+$('div.img').find('img').eq(0).attr('src')
       const rank = {}
-      
+      //soloDuo
+      let [elo, eloNumber] = $('div[class="txt mainRankingDescriptionText"]').find('.leagueTier').text().trim().split(' ')
+      rank['soloDuo'] = this.traduzirElo(elo) + ' ' + eloNumber + ' ' + $('div[class="txt mainRankingDescriptionText"]').find('.leaguePoints').text().trim()
+      //flex
+      console.log(rank)
       return {
         iconePerfil,
         nick,
